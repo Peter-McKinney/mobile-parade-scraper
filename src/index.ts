@@ -33,7 +33,7 @@ export function buildParadeSchedule(response: ParadeScheduleResponse) {
       }
     } catch (err) {
       if (loggingEnabled) {
-        console.warn(err);
+        console.warn(err, "error ======================");
       }
     }
   }
@@ -50,7 +50,7 @@ export function decodeHTMLEntities(encodedString: string) {
   const translate = {
     nbsp: " ",
     amp: "&",
-    quot: '"',
+    quot: "'",
     lt: "<",
     gt: ">",
   };
@@ -77,9 +77,12 @@ export function parseParadeDate(html: string): Date | null {
 
   const dateString = $("strong").html();
 
-  let currentDate = dateString && Date.parse(dateString) ? new Date(dateString) : null;
+  const currentDate =
+    dateString && Date.parse(dateString) ? new Date(dateString) : null;
 
-  currentDate.setFullYear(currentYear);
+  if (currentDate) {
+    currentDate.setFullYear(currentYear);
+  }
   return currentDate;
 }
 

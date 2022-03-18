@@ -37,17 +37,18 @@ describe("parseParadeDate", () => {
   it("should parse date", () => {
     const html = "<body><p><strong>SUNDAY, FEBRUARY 20</strong></p></body>";
     const expectedDate = new Date("2/20/2022");
-      expect(parseParadeDate(html).toDateString()).to.equal(
-          expectedDate.toDateString()
-      );
+    expect(parseParadeDate(html).toDateString()).to.equal(
+      expectedDate.toDateString()
+    );
   });
 });
 
-describe('parseParadeOrg', () => {
-    it('should parse parade organization', () => {
-        const html = '<body><p><a>7:00 pm - Order of Butterfly Maidens Parade</a></p></body>';
-        const org = parseParadeOrg(html);
+describe("parseParadeOrg", () => {
+  it("should parse parade organization", () => {
+    const html =
+      "<body><p><a>7:00 pm - Order of Butterfly Maidens Parade</a></p></body>";
+    const org = parseParadeOrg(html);
 
-        expect(org).to.be.equal('7:00 pm - Order of Butterfly Maidens Parade');
-    });
+    expect(org).to.be.equal("7:00 pm - Order of Butterfly Maidens Parade");
+  });
 });
