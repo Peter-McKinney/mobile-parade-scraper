@@ -1,5 +1,4 @@
 import {
-  decodeHTMLEntities,
   isOrg,
   parseParadeDate,
   parseParadeOrg,
