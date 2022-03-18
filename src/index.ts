@@ -3,7 +3,7 @@ import cheerio from "cheerio";
 import fs from "fs";
 import { ParadeScheduleResponse } from "./classes/ParadeScheduleResponse";
 
-const loggingEnabled = process.env.logging || false;
+const loggingEnabled = process.env.logging === "true" || false;
 const url =
   "https://www.arcgis.com/sharing/rest/content/items/aa1969cf3b68462a8676acdfb4839ad4/data?f=json";
 const AxiosInstance = axios.create();
@@ -32,9 +32,7 @@ export function buildParadeSchedule(response: ParadeScheduleResponse) {
         schedule[currentOrg] = currentDate;
       }
     } catch (err) {
-      if (loggingEnabled) {
-        console.warn(err, "error ======================");
-      }
+      log(err);
     }
   }
 
