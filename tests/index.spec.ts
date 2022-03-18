@@ -26,13 +26,6 @@ describe("removeHtml", () => {
   });
 });
 
-describe("decodeHTML", () => {
-  it("should return encoded html string", () => {
-    const encodedHtml = "&";
-    expect(decodeHTMLEntities(encodedHtml)).to.be.equal("&amp");
-  });
-});
-
 describe("parseParadeDate", () => {
   it("should parse date", () => {
     const html = "<body><p><strong>SUNDAY, FEBRUARY 20</strong></p></body>";
