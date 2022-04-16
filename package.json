@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "start": "tsc && node dist/index.js && mv parade-schedule.json dist/parade.schedule.json",
-    "export": "cp parade-schedule.json dist/parade-schedule.json",
+    "export": "mv parade-schedule.json dist/parade-schedule.json",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'",
     "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
     "format:check": "prettier --check .",
