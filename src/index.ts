@@ -26,10 +26,11 @@ export function buildParadeSchedule(response: ParadeScheduleResponse) {
       const html = response.nodes[node]?.data?.text;
 
       currentDate = parseParadeDate(html) ?? currentDate;
-      const currentOrg = parseParadeOrg(html);
+      const [currentOrg, currentTime] = parseParadeOrg(html);
 
       if (currentDate && currentOrg) {
-        schedule[currentOrg] = currentDate;
+        const combinedDate = combineDateTime(currentDate, currentTime);
+        schedule[currentOrg] = combinedDate;
       }
     } catch (err) {
       log(err);
@@ -81,14 +82,52 @@ export function parseParadeDate(html: string): Date | null {
   if (currentDate) {
     currentDate.setFullYear(currentYear);
   }
+
   return currentDate;
 }
 
-export function parseParadeOrg(html: string): string | null {
+export function parseParadeOrg(html: string): [string, string] {
   const $ = cheerio.load(html, cheerioOptions);
   const organizationName = $("a").html();
 
-  return isOrg(organizationName) ? removeHtml(organizationName) : null;
+  let sanitizedOrgName = "";
+  let sanitizedTime = "";
+
+  if (isOrg(organizationName)) {
+    const orgNameWithTime = removeHtml(organizationName);
+    const orgNameSplit = orgNameWithTime.split("-");
+
+    sanitizedOrgName = orgNameSplit[1].trim();
+    sanitizedTime = orgNameSplit[0].trim();
+  }
+
+  return [sanitizedOrgName, sanitizedTime];
+}
+
+export function combineDateTime(date: Date, time: string): Date {
+  const time24h = convert12hrTo24hr(time);
+  let [hours, minutes] = time24h.split(":");
+
+  date.setUTCHours(+hours, +minutes);
+
+  return date;
+}
+
+export function convert12hrTo24hr(time12h: string): string {
+  const [time, modifier] = time12h.split(" ");
+  let hoursInt = 0;
+
+  let [hours, minutes] = time.split(":");
+
+  if (hours === "12") {
+    hours = "00";
+  }
+
+  if (modifier.toUpperCase() === "PM") {
+    hoursInt = parseInt(hours, 10) + 12;
+  }
+
+  return `${hoursInt}:${minutes}`;
 }
 
 export function log(logInfo: unknown) {

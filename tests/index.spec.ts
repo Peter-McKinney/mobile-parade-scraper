@@ -1,4 +1,5 @@
 import {
+  combineDateTime,
   isOrg,
   parseParadeDate,
   parseParadeOrg,
@@ -41,6 +42,16 @@ describe("parseParadeOrg", () => {
       "<body><p><a>7:00 pm - Order of Butterfly Maidens Parade</a></p></body>";
     const org = parseParadeOrg(html);
 
-    expect(org).to.be.equal("7:00 pm - Order of Butterfly Maidens Parade");
+    expect(org[0]).to.be.equal("Order of Butterfly Maidens Parade");
+    expect(org[1]).to.be.equal("7:00 pm");
   });
+});
+
+describe("combineDateTime", () => {
+  const date = new Date("3/5/2022");
+  const time = "7:30 pm";
+  const expectedDate = new Date("3/5/2022 19:30:00Z");
+
+  const combinedDate = combineDateTime(date, time);
+  expect(combinedDate.toString()).to.be.equal(expectedDate.toString());
 });
