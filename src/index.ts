@@ -106,7 +106,7 @@ export function parseParadeOrg(html: string): [string, string] {
 
 export function combineDateTime(date: Date, time: string): Date {
   const time24h = convert12hrTo24hr(time);
-  let [hours, minutes] = time24h.split(":");
+  const [hours, minutes] = time24h.split(":");
 
   date.setUTCHours(+hours, +minutes);
 
@@ -117,14 +117,10 @@ export function convert12hrTo24hr(time12h: string): string {
   const [time, modifier] = time12h.split(" ");
   let hoursInt = 0;
 
-  let [hours, minutes] = time.split(":");
-
-  if (hours === "12") {
-    hours = "00";
-  }
+  const [hours, minutes] = time.split(":");
 
   if (modifier.toUpperCase() === "PM") {
-    hoursInt = parseInt(hours, 10) + 12;
+    hoursInt = parseInt(hours === "12" ? "00" : hours, 10) + 12;
   }
 
   return `${hoursInt}:${minutes}`;
