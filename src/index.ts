@@ -13,7 +13,7 @@ AxiosInstance.get(url)
   .then((response) => {
     const schedule = buildParadeSchedule(response.data);
     log(schedule);
-    fs.writeFileSync("parade-schedule.json", JSON.stringify(schedule));
+    fs.writeFileSync("dist/parade-schedule.json", JSON.stringify(schedule));
   })
   .catch(console.error);
 
