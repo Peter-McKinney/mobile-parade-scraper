@@ -8,18 +8,46 @@ const url =
   "https://www.arcgis.com/sharing/rest/content/items/aa1969cf3b68462a8676acdfb4839ad4/data?f=json";
 const AxiosInstance = axios.create();
 const cheerioOptions = { decodeEntities: false };
+const minifiedFileName = "parade-schedule.json";
+const formattedFileName = "parade-schedule.formatted.json";
+const outputDirectory = "dist";
 
-AxiosInstance.get(url)
-  .then((response) => {
-    const schedule = buildParadeSchedule(response.data);
-    log(schedule);
-    fs.writeFileSync("dist/parade-schedule.json", JSON.stringify(schedule));
-  })
-  .catch(console.error);
+export function scrape(): void {
+  AxiosInstance.get(url)
+    .then((response) => {
+      const schedule = buildParadeSchedule(response.data);
+      log(schedule);
 
-export function buildParadeSchedule(response: ParadeScheduleResponse) {
+      writeFormattedFile(schedule);
+      writeMinifiedFile(schedule);
+      console.log("\nParade schedule generated successfully!");
+    })
+    .catch(console.error);
+}
+
+export function writeFormattedFile(schedule: Record<string, Date>): void {
+  fs.writeFileSync(
+    `${outputDirectory}/${formattedFileName}`,
+    JSON.stringify(schedule, null, 2)
+  );
+
+  console.log(`File written ${outputDirectory}/${formattedFileName}`);
+}
+
+export function writeMinifiedFile(schedule: Record<string, Date>): void {
+  fs.writeFileSync(
+    `${outputDirectory}/${minifiedFileName}`,
+    JSON.stringify(schedule)
+  );
+
+  console.log(`File written ${outputDirectory}/${minifiedFileName}`);
+}
+
+export function buildParadeSchedule(
+  response: ParadeScheduleResponse
+): Record<string, Date> {
   let currentDate: Date = null;
-  const schedule = {};
+  const schedule: Record<string, Date> = {};
 
   for (const node in response.nodes) {
     try {
