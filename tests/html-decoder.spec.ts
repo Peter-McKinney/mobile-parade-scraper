@@ -1,4 +1,4 @@
-import { HTMLDecoder } from "../src/classes/HTMLDecoder";
+import { HTMLDecoder } from "../src/classes/html-decoder";
 
 describe("HTMLDecoder", () => {
   it("should remove html from html string", () => {
@@ -15,5 +15,14 @@ describe("HTMLDecoder", () => {
 
     console.log(decodedHtml);
     expect(decodedHtml).toEqual(" &some test text here &");
+  });
+
+  it("should return decoded html string from number encoding", () => {
+    const encodedHtml = "&#33;";
+
+    const decodedHtml = HTMLDecoder.decodeHTMLEntities(encodedHtml);
+
+    console.log(decodedHtml);
+    expect(decodedHtml).toEqual("!");
   });
 });

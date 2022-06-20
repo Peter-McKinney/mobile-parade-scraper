@@ -1,7 +1,7 @@
 import fs from "fs";
 
 jest.mock("fs");
-import { JSONFileWriter } from "../src/classes/JSONFileWriter";
+import { JSONFileWriter } from "../src/classes/json-file-writer";
 
 describe("JSONFileWriter", () => {
   const fileWriter: JSONFileWriter = new JSONFileWriter();
