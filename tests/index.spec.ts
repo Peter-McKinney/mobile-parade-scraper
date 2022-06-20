@@ -1,9 +1,5 @@
-import {
-  combineDateTime,
-  isOrg,
-  parseParadeDate,
-  parseParadeOrg,
-} from "../src/index";
+import { TimeUtil } from "../src/classes/time.util";
+import { isOrg, parseParadeDate, parseParadeOrg } from "../src/index";
 
 describe("isOrg", () => {
   it("should return true if org string", function () {
@@ -41,6 +37,6 @@ describe("combineDateTime", () => {
   const time = "7:30 pm";
   const expectedDate = new Date("3/5/2022 19:30:00Z");
 
-  const combinedDate = combineDateTime(date, time);
+  const combinedDate = TimeUtil.combineDateTime(date, time);
   expect(combinedDate.toString()).toBe(expectedDate.toString());
 });

@@ -3,6 +3,7 @@ import cheerio from "cheerio";
 import { HTMLDecoder } from "./classes/HTMLDecoder";
 import { JSONFileWriter } from "./classes/JSONFileWriter";
 import { ParadeScheduleResponse } from "./classes/ParadeScheduleResponse";
+import { TimeUtil } from "./classes/time.util";
 
 const loggingEnabled = process.env.logging === "true" || false;
 const url =
@@ -39,7 +40,7 @@ export function buildParadeSchedule(
       const [currentOrg, currentTime] = parseParadeOrg(html);
 
       if (currentDate && currentOrg) {
-        const combinedDate = combineDateTime(currentDate, currentTime);
+        const combinedDate = TimeUtil.combineDateTime(currentDate, currentTime);
         schedule[currentOrg] = combinedDate;
       }
     } catch (err) {
@@ -88,28 +89,6 @@ export function parseParadeOrg(html: string): [string, string] {
   }
 
   return [sanitizedOrgName, sanitizedTime];
-}
-
-export function combineDateTime(date: Date, time: string): Date {
-  const time24h = convert12hrTo24hr(time);
-  const [hours, minutes] = time24h.split(":");
-
-  date.setUTCHours(+hours, +minutes);
-
-  return date;
-}
-
-export function convert12hrTo24hr(time12h: string): string {
-  const [time, modifier] = time12h.split(" ");
-  let hoursInt = 0;
-
-  const [hours, minutes] = time.split(":");
-
-  if (modifier.toUpperCase() === "PM") {
-    hoursInt = parseInt(hours === "12" ? "00" : hours, 10) + 12;
-  }
-
-  return `${hoursInt}:${minutes}`;
 }
 
 export function log(logInfo: unknown) {
