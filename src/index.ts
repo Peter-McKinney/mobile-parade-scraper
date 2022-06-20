@@ -1,6 +1,7 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import fs from "fs";
+import { HTMLDecoder } from "./classes/HTMLDecoder";
 import { ParadeScheduleResponse } from "./classes/ParadeScheduleResponse";
 
 const loggingEnabled = process.env.logging === "true" || false;
@@ -68,30 +69,6 @@ export function buildParadeSchedule(
   return schedule;
 }
 
-export function removeHtml(html: string) {
-  return decodeHTMLEntities(html.replace(/(<([^>]+)>)/gi, ""));
-}
-
-export function decodeHTMLEntities(encodedString: string) {
-  const translateRegExp = /&(nbsp|amp|quot|lt|gt);/g;
-  const translate = {
-    nbsp: " ",
-    amp: "&",
-    quot: "'",
-    lt: "<",
-    gt: ">",
-  };
-
-  return encodedString
-    .replace(translateRegExp, function (match, entity) {
-      return translate[entity];
-    })
-    .replace(/&#(\d+);/gi, function (match, numStr) {
-      const num = parseInt(numStr, 10);
-      return String.fromCharCode(num);
-    });
-}
-
 export function isOrg(orgString: string): boolean {
   const timeRegEx = new RegExp(/(\d+):(\d+).(am|pm|noon)/);
 
@@ -122,7 +99,7 @@ export function parseParadeOrg(html: string): [string, string] {
   let sanitizedTime = "";
 
   if (isOrg(organizationName)) {
-    const orgNameWithTime = removeHtml(organizationName);
+    const orgNameWithTime = HTMLDecoder.removeHtml(organizationName);
     const orgNameSplit = orgNameWithTime.split("-");
 
     sanitizedOrgName = orgNameSplit[1].trim();

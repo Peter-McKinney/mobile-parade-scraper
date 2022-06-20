@@ -3,7 +3,6 @@ import {
   isOrg,
   parseParadeDate,
   parseParadeOrg,
-  removeHtml,
 } from "../src/index";
 
 describe("isOrg", () => {
@@ -13,15 +12,6 @@ describe("isOrg", () => {
 
   it("should return false if not org string", () => {
     expect(isOrg("lksdflkjf <")).toBe(false);
-  });
-});
-
-describe("removeHtml", () => {
-  it("should return sanitized string", () => {
-    const html = "<body><p>hello</p></body>";
-    const sanitizedString = removeHtml(html);
-
-    expect(sanitizedString).toBe("hello");
   });
 });
 
