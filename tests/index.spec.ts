@@ -1,4 +1,3 @@
-import { TimeUtil } from "../src/classes/time.util";
 import { isOrg, parseParadeDate, parseParadeOrg } from "../src/index";
 
 describe("isOrg", () => {
