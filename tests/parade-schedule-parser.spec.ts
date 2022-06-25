@@ -1,7 +1,65 @@
+import { HtmlNode } from "../src/classes/html-node";
+import { LogUtil } from "../src/classes/log.util";
 import { ParadeScheduleParser } from "../src/classes/parade-schedule-parser";
+import { ParadeScheduleResponse } from "../src/classes/parade-schedule-response";
+import { TimeUtil } from "../src/classes/time.util";
 
 describe("ParadeScheduleParser", () => {
   const parser = new ParadeScheduleParser();
+
+  describe("buildParadeSchedule", () => {
+    const response = new ParadeScheduleResponse();
+    response.nodes = [
+      {
+        data: {
+          text: "something",
+        },
+      } as HtmlNode,
+      {
+        data: {
+          text: "something else",
+        },
+      } as HtmlNode,
+    ];
+
+    afterEach(() => {
+      jest.clearAllMocks();
+      jest.restoreAllMocks();
+    });
+
+    it("should return the parade schedule", () => {
+      jest
+        .spyOn(parser, "parseParadeDate")
+        .mockReturnValue(new Date("3/5/2022"));
+
+      jest
+        .spyOn(parser, "parseParadeOrg")
+        .mockReturnValue(["New Fake Org", "12:00PM"]);
+
+      jest
+        .spyOn(TimeUtil, "combineDateTime")
+        .mockReturnValue(new Date("3/5/2022 12:00Z"));
+
+      const schedule = parser.buildParadeSchedule(response);
+
+      expect(schedule["New Fake Org"].toISOString()).toBe(
+        "2022-03-05T12:00:00.000Z"
+      );
+    });
+
+    it("it should log an error", () => {
+      jest.spyOn(parser, "parseParadeDate").mockReturnValue(null);
+
+      jest.spyOn(parser, "parseParadeOrg").mockReturnValue(null);
+
+      const logSpy = jest.spyOn(LogUtil, "log");
+
+      const schedule = parser.buildParadeSchedule(response);
+
+      expect(logSpy).toHaveBeenCalled();
+      expect(Object.keys(schedule).length).toBe(0);
+    });
+  });
 
   describe("isOrg", () => {
     it("should return true if org string", function () {
@@ -20,6 +78,13 @@ describe("ParadeScheduleParser", () => {
       expect(parser.parseParadeDate(html).toDateString()).toBe(
         expectedDate.toDateString()
       );
+    });
+
+    it("it should return null for unparsable date", () => {
+      const html =
+        "<body><p><strong>this is not , a , date</strong></p></body>";
+
+      expect(parser.parseParadeDate(html)).toBe(null);
     });
   });
 
