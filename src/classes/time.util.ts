@@ -8,7 +8,7 @@ export class TimeUtil {
     return date;
   }
 
-  static convert12hrTo24hr(time12h: string): string {
+  private static convert12hrTo24hr(time12h: string): string {
     const [time, modifier] = time12h.split(" ");
     let hoursInt = 0;
 
