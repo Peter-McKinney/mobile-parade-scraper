@@ -7,6 +7,8 @@ import { TimeUtil } from "./time.util";
 const cheerioOptions = { decodeEntities: false };
 
 export class ParadeScheduleParser {
+  currentYear: string = "";
+
   buildParadeSchedule(response: ParadeScheduleResponse): Record<string, Date> {
     let currentDate: Date = null;
     const schedule: Record<string, Date> = {};
@@ -14,6 +16,10 @@ export class ParadeScheduleParser {
     for (const node in response.nodes) {
       try {
         const html = response.nodes[node]?.data?.text;
+
+        if (html.includes("Schedule")) {
+          this.currentYear = this.parseScheduleYear(html);
+        }
 
         currentDate = this.parseParadeDate(html) ?? currentDate;
         const [currentOrg, currentTime] = this.parseParadeOrg(html);
@@ -39,8 +45,12 @@ export class ParadeScheduleParser {
     return orgString && timeRegEx.test(orgString);
   }
 
+  parseScheduleYear(html: string): string {
+    const year = html.split("-")[1].trim();
+    return year;
+  }
+
   parseParadeDate(html: string): Date | null {
-    const currentYear = new Date().getFullYear();
     const $ = cheerio.load(html, cheerioOptions);
 
     const dateString = $("strong").html();
@@ -49,7 +59,7 @@ export class ParadeScheduleParser {
       dateString && Date.parse(dateString) ? new Date(dateString) : null;
 
     if (currentDate) {
-      currentDate.setFullYear(currentYear);
+      currentDate.setFullYear(+this.currentYear);
     }
 
     return currentDate;

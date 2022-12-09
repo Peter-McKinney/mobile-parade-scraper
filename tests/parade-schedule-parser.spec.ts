@@ -6,6 +6,7 @@ import { TimeUtil } from "../src/classes/time.util";
 
 describe("ParadeScheduleParser", () => {
   const parser = new ParadeScheduleParser();
+  parser.currentYear = "2023";
 
   describe("buildParadeSchedule", () => {
     const response = new ParadeScheduleResponse();
@@ -74,7 +75,7 @@ describe("ParadeScheduleParser", () => {
   describe("parseParadeDate", () => {
     it("should parse date", () => {
       const html = "<body><p><strong>SUNDAY, FEBRUARY 20</strong></p></body>";
-      const expectedDate = new Date("2/20/2022");
+      const expectedDate = new Date("2/20/2023");
       expect(parser.parseParadeDate(html).toDateString()).toBe(
         expectedDate.toDateString()
       );
