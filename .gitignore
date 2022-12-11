@@ -31,5 +31,9 @@ node_modules
 Thumbs.db
 
 # Ignore built ts files
-dist/**/*
+output/**/*
+
+#ignore source maps
+*.js
+*.js.map
 

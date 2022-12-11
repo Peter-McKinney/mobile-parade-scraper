@@ -1,5 +1,6 @@
 import cheerio from "cheerio";
 import { HTMLDecoder } from "./html-decoder";
+import { HtmlNode } from "./html-node";
 import { LogUtil } from "./log.util";
 import { ParadeScheduleResponse } from "./parade-schedule-response";
 import { TimeUtil } from "./time.util";
@@ -15,21 +16,30 @@ export class ParadeScheduleParser {
 
     for (const node in response.nodes) {
       try {
-        const html = response.nodes[node]?.data?.text;
+        const htmlNode = new HtmlNode(
+          response.nodes[node]?.data,
+          response.nodes[node]?.type
+        );
 
-        if (html.includes("Schedule")) {
-          this.currentYear = this.parseScheduleYear(html);
-        }
+        if (htmlNode.isParsable) {
+          if (htmlNode.textElement.includes("Schedule")) {
+            this.currentYear = this.parseScheduleYear(htmlNode.textElement);
+          } else {
+            currentDate =
+              this.parseParadeDate(htmlNode.textElement) ?? currentDate;
 
-        currentDate = this.parseParadeDate(html) ?? currentDate;
-        const [currentOrg, currentTime] = this.parseParadeOrg(html);
+            const [currentOrg, currentTime] = this.parseParadeOrg(
+              htmlNode.textElement
+            );
 
-        if (currentDate && currentOrg) {
-          const combinedDate = TimeUtil.combineDateTime(
-            currentDate,
-            currentTime
-          );
-          schedule[currentOrg] = combinedDate;
+            if (currentDate && currentOrg) {
+              const combinedDate = TimeUtil.combineDateTime(
+                currentDate,
+                currentTime
+              );
+              schedule[currentOrg] = combinedDate;
+            }
+          }
         }
       } catch (err) {
         LogUtil.log(err);

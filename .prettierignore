@@ -1,2 +1,3 @@
-dist
+output
 coverage
+src/**/*.js

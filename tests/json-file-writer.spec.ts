@@ -4,7 +4,7 @@ jest.mock("fs");
 import { JSONFileWriter } from "../src/classes/json-file-writer";
 
 describe("JSONFileWriter", () => {
-  const fileWriter: JSONFileWriter = new JSONFileWriter();
+  const fileWriter: JSONFileWriter = new JSONFileWriter("dist");
   const schedule: Record<string, Date> = {};
 
   beforeAll(() => {

@@ -14,12 +14,16 @@ describe("ParadeScheduleParser", () => {
       {
         data: {
           text: "something",
+          type: "text",
         },
+        type: "text",
       } as HtmlNode,
       {
         data: {
           text: "something else",
+          type: "text",
         },
+        type: "text",
       } as HtmlNode,
     ];
 
@@ -51,7 +55,9 @@ describe("ParadeScheduleParser", () => {
     it("it should log an error", () => {
       jest.spyOn(parser, "parseParadeDate").mockReturnValue(null);
 
-      jest.spyOn(parser, "parseParadeOrg").mockReturnValue(null);
+      jest.spyOn(parser, "parseParadeOrg").mockImplementation(() => {
+        throw new Error();
+      });
 
       const logSpy = jest.spyOn(LogUtil, "log");
 
@@ -76,7 +82,7 @@ describe("ParadeScheduleParser", () => {
     it("should parse date", () => {
       const html = "<body><p><strong>SUNDAY, FEBRUARY 20</strong></p></body>";
       const expectedDate = new Date("2/20/2023");
-      expect(parser.parseParadeDate(html).toDateString()).toBe(
+      expect(parser.parseParadeDate(html)?.toDateString()).toBe(
         expectedDate.toDateString()
       );
     });

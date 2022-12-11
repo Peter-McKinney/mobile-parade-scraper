@@ -14,7 +14,7 @@ export function scrape(): void {
       const schedule = parser.buildParadeSchedule(response.data);
       LogUtil.log(schedule);
 
-      const fileWriter = new JSONFileWriter();
+      const fileWriter = new JSONFileWriter("output");
       fileWriter.writeFormattedFile(schedule);
       fileWriter.writeMinifiedFile(schedule);
 
