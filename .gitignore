@@ -32,6 +32,7 @@ Thumbs.db
 
 # Ignore built ts files
 output/**/*
+output
 
 #ignore source maps
 *.js
