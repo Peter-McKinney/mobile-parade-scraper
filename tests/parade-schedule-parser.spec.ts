@@ -47,9 +47,7 @@ describe("ParadeScheduleParser", () => {
 
       const schedule = parser.buildParadeSchedule(response);
 
-      expect(schedule["New Fake Org"].toISOString()).toBe(
-        "2022-03-05T12:00:00.000Z"
-      );
+      expect(schedule["2022-03-05T12:00:00.000Z"]).toBe("New Fake Org");
     });
 
     it("it should log an error", () => {

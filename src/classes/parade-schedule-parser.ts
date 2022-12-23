@@ -10,9 +10,11 @@ const cheerioOptions = { decodeEntities: false };
 export class ParadeScheduleParser {
   currentYear: string = "";
 
-  buildParadeSchedule(response: ParadeScheduleResponse): Record<string, Date> {
+  buildParadeSchedule(
+    response: ParadeScheduleResponse
+  ): Record<string, string> {
     let currentDate: Date = null;
-    const schedule: Record<string, Date> = {};
+    const schedule: Record<string, string> = {};
 
     for (const node in response.nodes) {
       try {
@@ -37,7 +39,7 @@ export class ParadeScheduleParser {
                 currentDate,
                 currentTime
               );
-              schedule[currentOrg] = combinedDate;
+              schedule[combinedDate.toISOString()] = currentOrg;
             }
           }
         }

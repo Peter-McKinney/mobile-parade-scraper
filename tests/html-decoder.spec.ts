@@ -1,4 +1,5 @@
 import { HTMLDecoder } from "../src/classes/html-decoder";
+import { LogUtil } from "../src/classes/log.util";
 
 describe("HTMLDecoder", () => {
   it("should remove html from html string", () => {
@@ -13,7 +14,6 @@ describe("HTMLDecoder", () => {
 
     const decodedHtml = HTMLDecoder.decodeHTMLEntities(encodedHtml);
 
-    console.log(decodedHtml);
     expect(decodedHtml).toEqual(" &some test text here &");
   });
 
@@ -22,7 +22,6 @@ describe("HTMLDecoder", () => {
 
     const decodedHtml = HTMLDecoder.decodeHTMLEntities(encodedHtml);
 
-    console.log(decodedHtml);
     expect(decodedHtml).toEqual("!");
   });
 });

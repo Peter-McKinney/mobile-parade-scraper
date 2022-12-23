@@ -18,7 +18,7 @@ export function scrape(): void {
       fileWriter.writeFormattedFile(schedule);
       fileWriter.writeMinifiedFile(schedule);
 
-      console.log("\nParade schedule generated successfully!");
+      LogUtil.log("\nParade schedule generated successfully!");
     })
     .catch(console.error);
 }

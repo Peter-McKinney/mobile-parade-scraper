@@ -1,4 +1,5 @@
 import fs from "fs";
+import { LogUtil } from "./log.util";
 
 export class JSONFileWriter {
   minifiedFileName: string = "parade-schedule.json";
@@ -13,25 +14,24 @@ export class JSONFileWriter {
     }
   }
 
-  writeFormattedFile(schedule: Record<string, Date>): void {
-    console.log(schedule);
+  writeFormattedFile(schedule: Record<string, string>): void {
     fs.writeFileSync(
       `${this.outputDirectory}/${this.formattedFileName}`,
       JSON.stringify(schedule, null, 2)
     );
 
-    console.log(
+    LogUtil.log(
       `File written ${this.outputDirectory}/${this.formattedFileName}`
     );
   }
 
-  writeMinifiedFile(schedule: Record<string, Date>): void {
+  writeMinifiedFile(schedule: Record<string, string>): void {
     fs.writeFileSync(
       `${this.outputDirectory}/${this.minifiedFileName}`,
       JSON.stringify(schedule)
     );
 
-    console.log(
+    LogUtil.log(
       `File written ${this.outputDirectory}/${this.minifiedFileName}`
     );
   }

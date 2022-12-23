@@ -5,11 +5,11 @@ import { JSONFileWriter } from "../src/classes/json-file-writer";
 
 describe("JSONFileWriter", () => {
   const fileWriter: JSONFileWriter = new JSONFileWriter("dist");
-  const schedule: Record<string, Date> = {};
+  const schedule: Record<string, string> = {};
 
   beforeAll(() => {
-    schedule["something"] = new Date();
-    schedule["else"] = new Date();
+    schedule["something"] = new Date().toISOString();
+    schedule["else"] = new Date().toISOString();
   });
 
   describe("formatted json file output", () => {
@@ -22,15 +22,6 @@ describe("JSONFileWriter", () => {
         expectedFormattedString
       );
     });
-
-    it("should log formatted file name", () => {
-      const logSpy = jest.spyOn(console, "log");
-
-      fileWriter.writeFormattedFile(schedule);
-      expect(logSpy).toHaveBeenCalledWith(
-        "File written dist/parade-schedule.formatted.json"
-      );
-    });
   });
 
   describe("minified json file output", () => {
@@ -41,15 +32,6 @@ describe("JSONFileWriter", () => {
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         "dist/parade-schedule.json",
         expectedMinifiedString
-      );
-    });
-
-    it("should log minified file name", () => {
-      const logSpy = jest.spyOn(console, "log");
-
-      fileWriter.writeMinifiedFile(schedule);
-      expect(logSpy).toHaveBeenCalledWith(
-        "File written dist/parade-schedule.json"
       );
     });
   });
