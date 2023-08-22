@@ -1,5 +1,4 @@
 import { HTMLDecoder } from "../src/classes/html-decoder";
-import { LogUtil } from "../src/classes/log.util";
 
 describe("HTMLDecoder", () => {
   it("should remove html from html string", () => {
