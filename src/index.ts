@@ -1,7 +1,9 @@
 import axios from "axios";
+import { CSVFileWriter } from "./classes/csv-file-writer";
 import { JSONFileWriter } from "./classes/json-file-writer";
 import { LogUtil } from "./classes/log.util";
 import { ParadeScheduleParser } from "./classes/parade-schedule-parser";
+import { FileWriter } from "./interfaces/FileWriter";
 
 const url =
   "https://www.arcgis.com/sharing/rest/content/items/aa1969cf3b68462a8676acdfb4839ad4/data?f=json";
@@ -14,11 +16,14 @@ export function scrape(): void {
       const schedule = parser.buildParadeSchedule(response.data);
       LogUtil.log(schedule);
 
-      const fileWriter = new JSONFileWriter("output");
-      fileWriter.writeFormattedFile(schedule);
-      fileWriter.writeMinifiedFile(schedule);
+      const fileWriters = getFileWriters();
+      fileWriters.forEach((f) => f.writeAllFiles(schedule));
 
       LogUtil.log("\nParade schedule generated successfully!");
     })
     .catch(console.error);
+}
+
+function getFileWriters(): FileWriter[] {
+  return [new CSVFileWriter("output"), new JSONFileWriter("output")];
 }

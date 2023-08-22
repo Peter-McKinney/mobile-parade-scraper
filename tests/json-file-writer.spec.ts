@@ -28,7 +28,7 @@ describe("JSONFileWriter", () => {
     it("should write minified file", () => {
       const expectedMinifiedString = JSON.stringify(schedule);
 
-      fileWriter.writeMinifiedFile(schedule);
+      fileWriter.writeFile(schedule);
       expect(fs.writeFileSync).toHaveBeenCalledWith(
         "dist/parade-schedule.json",
         expectedMinifiedString

@@ -39,7 +39,7 @@ export class ParadeScheduleParser {
                 currentDate,
                 currentTime
               );
-              schedule[combinedDate.toUTCString()] = currentOrg;
+              schedule[combinedDate.toISOString()] = currentOrg;
             }
           }
         }
