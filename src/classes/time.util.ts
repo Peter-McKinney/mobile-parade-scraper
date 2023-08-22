@@ -3,7 +3,7 @@ export class TimeUtil {
     const time24h = this.convert12hrTo24hr(time);
     const [hours, minutes] = time24h.split(":");
 
-    date.setUTCHours(+hours, +minutes);
+    date.setHours(+hours, +minutes);
 
     return date;
   }

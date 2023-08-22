@@ -35,11 +35,11 @@ export class ParadeScheduleParser {
             );
 
             if (currentDate && currentOrg) {
-              const combinedDate = TimeUtil.combineDateTime(
+              const combinedDate: Date = TimeUtil.combineDateTime(
                 currentDate,
                 currentTime
               );
-              schedule[combinedDate.toISOString()] = currentOrg;
+              schedule[combinedDate.toUTCString()] = currentOrg;
             }
           }
         }

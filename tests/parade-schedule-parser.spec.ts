@@ -43,11 +43,11 @@ describe("ParadeScheduleParser", () => {
 
       jest
         .spyOn(TimeUtil, "combineDateTime")
-        .mockReturnValue(new Date("3/5/2022 12:00Z"));
+        .mockReturnValue(new Date("3/5/2022 12:00"));
 
       const schedule = parser.buildParadeSchedule(response);
 
-      expect(schedule["2022-03-05T12:00:00.000Z"]).toBe("New Fake Org");
+      expect(schedule["Sat, 05 Mar 2022 18:00:00 GMT"]).toBe("New Fake Org");
     });
 
     it("it should log an error", () => {
